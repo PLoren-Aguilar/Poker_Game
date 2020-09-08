@@ -1,0 +1,8 @@
+* Poker game: things to do.
+
+- Implement a betting algorithm for the program. I also need to implement an "all in" rule.
+- Create a "pot" that can be added to the player's money -> DONE!
+- Decide if I want to represent the bets with actual chips on the table (this would be cooler) or a counter-> DONE!
+- Implement an "elimination function":
+     -> Not sure how to do it. 
+     -> I could eliminate the player from the list, but not sure how to respect the position of buttons and chips.
