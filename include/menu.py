@@ -1,3 +1,11 @@
+#------------------------------------------------------------------
+# The "newmenu" class takes care of all the graphic aspects of
+# the game. From loading the table image, the cards, buttons, etc
+#
+# Local dependencies: coordinates, treys/Card class
+#
+# Author: Pablo Loren-Aguilar
+#------------------------------------------------------------------
 from include.treys.treys import Card
 import pygame
 from include.coordinates import *
@@ -44,16 +52,18 @@ class newmenu:
         surface.blit(table, (-100,100))
         pygame.display.flip()
         
-        empty_rect = pygame.Rect(390, 530, 85, 110)
-        pygame.draw.rect(surface, (0,0,0), empty_rect, 1)
-        empty_rect = pygame.Rect(475, 530, 85, 110)
-        pygame.draw.rect(surface, (0,0,0), empty_rect, 1)
-        empty_rect = pygame.Rect(560, 530, 85, 110)
-        pygame.draw.rect(surface, (0,0,0), empty_rect, 1)
-        empty_rect = pygame.Rect(645, 530, 85, 110)
-        pygame.draw.rect(surface, (0,0,0), empty_rect, 1)
-        empty_rect = pygame.Rect(730, 530, 85, 110)
-        pygame.draw.rect(surface, (0,0,0), empty_rect, 1)
+        #empty_rect = pygame.Rect(cp1_x, cp1_y, 85, 110)
+        #pygame.draw.rect(surface, (0,0,0), empty_rect, 1)
+        #empty_rect = pygame.Rect(cp2_x, cp2_y, 310, 85)
+        #pygame.draw.rect(surface, (0,0,0), empty_rect, 1)
+        #empty_rect = pygame.Rect(cp3_x, cp3_y, 85, 110)
+        #pygame.draw.rect(surface, (0,0,0), empty_rect, 1)
+        #empty_rect = pygame.Rect(cp4_x, cp4_y, 85, 110)
+        #pygame.draw.rect(surface, (0,0,0), empty_rect, 1)
+        #empty_rect = pygame.Rect(cp5_x, cp5_y, 85, 110)
+        #pygame.draw.rect(surface, (0,0,0), empty_rect, 1)
+        #empty_rect = pygame.Rect(cp6_x, cp6_y, 85, 110)
+        #pygame.draw.rect(surface, (0,0,0), empty_rect, 1)
         
     def player_cards(self,surface,hand,player):
         file1 = "Images/cards/" + Card.int_to_str(hand[0]) + ".png"
@@ -88,21 +98,21 @@ class newmenu:
             surface.blit(common, comm[i])       
                    
     def put_buttons(self,surface,players_order,turn):
-        empty_rect = pygame.Rect(b1_x, b1_y-10, 170, 50)
-        pygame.draw.rect(surface, (255,255,255), empty_rect)
-        empty_rect = pygame.Rect(b2_x, b2_y-10, 170, 50)
-        pygame.draw.rect(surface, (255,255,255), empty_rect)
-        empty_rect = pygame.Rect(b3_x, b3_y-10, 170, 50)
-        pygame.draw.rect(surface, (255,255,255), empty_rect)
-        empty_rect = pygame.Rect(b4_x, b4_y-10, 170, 50)
-        pygame.draw.rect(surface, (255,255,255), empty_rect)
+        #empty_rect = pygame.Rect(b1_x, b1_y-10, 170, 50)
+        #pygame.draw.rect(surface, (255,255,255), empty_rect)
+        #empty_rect = pygame.Rect(b2_x, b2_y-10, 170, 50)
+        #pygame.draw.rect(surface, (255,255,255), empty_rect)
+        #empty_rect = pygame.Rect(b3_x, b3_y-10, 170, 50)
+        #pygame.draw.rect(surface, (255,255,255), empty_rect)
         
         font = pygame.font.SysFont('Tahoma', 20, True, False)
         if (len(players_order) >= 3):
             nplay = 3
             for i in range(nplay):
-                text = font.render(buttons[i], True, (0, 0, 0))
-                surface.blit(text, buttons_coords[players_order[i]])
+                button = "Images/" + buttons[i] + ".jpg"
+                image = pygame.image.load(button)
+                image = pygame.transform.scale(image, (50, 50))
+                surface.blit(image, buttons_coords[players_order[i]])
         elif (len(players_order) == 2):
             #This is a quite special case. The dealer is also the small blind
             text = font.render(buttons[0] +'/'+ buttons[1], True, (0, 0, 0))
@@ -138,7 +148,7 @@ class newmenu:
         
     def show_blinds(self,surface):
         font = pygame.font.SysFont('Tahoma', 30, True, False)
-        text = font.render('Current blinds: 5/10', True, (0, 0, 0))
+        text = font.render('Current blinds: 10/50', True, (0, 0, 0))
         surface.blit(text, (200,100))
               
     def put_blinds(self,surface,players_order):      
@@ -147,6 +157,7 @@ class newmenu:
                 chips1 = pygame.image.load(chips[i])
                 chips1 = pygame.transform.scale(chips1,(40,40))
                 surface.blit(chips1, chips_coords[players_order[i]])
+                
         if (len(players_order) == 2):
             #This is a special case. Here the dealer is the small blind and the other player the big blind
             chips1 = pygame.image.load(chips[1])
@@ -166,7 +177,7 @@ class newmenu:
         text = font.render('Pot = ' + str(pot), True, (0, 0, 0))
         surface.blit(text, (800,100))
         
-    def put_chips(self,surface,player,blind,amount,bet):
+    def put_chips(self,surface,player,id,blind,amount,bet):
         if (bet == 'preflop'):
             if (blind == True):
                 delta = cp_displ
@@ -174,18 +185,26 @@ class newmenu:
                 delta = 0
         else:
             delta = 0
-            
+           
         #Calculate the number of chips we need (and put them in the table)
         n100 = int(amount/100)
         if (n100 >= 0):
-            x = chips_coords[player][0] + delta
-            y = chips_coords[player][1]
+            if (id == 1 or id == 4):
+                x = chips_coords[player][0]
+                y = chips_coords[player][1] + delta
+            else:
+                x = chips_coords[player][0] + delta
+                y = chips_coords[player][1]
+                
             for i in range(n100):
                 nchips = pygame.image.load(chips[3])
                 nchips = pygame.transform.scale(nchips,(40,40))
                 surface.blit(nchips, (x,y))
-                x = x + cp_displ
-            
+                if (id == 1 or id == 4):
+                    y = y + cp_displ
+                else:
+                    x = x + cp_displ
+                    
         amount = amount % 100
         n50 = int(amount/50)
         if (n50 >= 0):
@@ -193,7 +212,10 @@ class newmenu:
                 nchips = pygame.image.load(chips[2])
                 nchips = pygame.transform.scale(nchips,(40,40))
                 surface.blit(nchips, (x,y))
-                x = x + cp_displ
+                if (id == 1 or id == 4):
+                    y = y + cp_displ
+                else:
+                    x = x + cp_displ
                     
         amount = amount % 50
         n10 = int(amount/10)
@@ -202,7 +224,10 @@ class newmenu:
                 nchips = pygame.image.load(chips[1])
                 nchips = pygame.transform.scale(nchips,(40,40))
                 surface.blit(nchips, (x,y))
-                x = x + cp_displ
+                if (id == 1 or id == 4):
+                    y = y + cp_displ
+                else:
+                    x = x + cp_displ
                             
         amount = amount % 10
         n5 = int(amount/5)
@@ -211,14 +236,17 @@ class newmenu:
                 nchips = pygame.image.load(chips[0])
                 nchips = pygame.transform.scale(nchips,(40,40))
                 surface.blit(nchips, (x,y))
-                x = x + cp_displ           
+                if (id == 1 or id == 4):
+                    y = y + cp_displ
+                else:
+                    x = x + cp_displ
             
     def remove_chips(self,surface):
         rect = pygame.Rect(cp1_x, cp1_y-5, 170, 50)
         pygame.draw.rect(surface, (0,153,105), rect)
         pygame.draw.rect(surface, (0,0,0), rect, 1)
         
-        rect = pygame.Rect(cp2_x, cp2_y-5, 170, 50)
+        rect = pygame.Rect(cp2_x-5, cp2_y, 50, 170)
         pygame.draw.rect(surface, (0,153,105), rect)
         pygame.draw.rect(surface, (0,0,0), rect, 1)
         
@@ -227,5 +255,13 @@ class newmenu:
         pygame.draw.rect(surface, (0,0,0), rect, 1)
         
         rect = pygame.Rect(cp4_x, cp4_y-5, 170, 50)
+        pygame.draw.rect(surface, (0,153,105), rect)
+        pygame.draw.rect(surface, (0,0,0), rect, 1)
+        
+        rect = pygame.Rect(cp5_x-5, cp5_y, 50, 170)
+        pygame.draw.rect(surface, (0,153,105), rect)
+        pygame.draw.rect(surface, (0,0,0), rect, 1)
+        
+        rect = pygame.Rect(cp6_x, cp6_y-5, 170, 50)
         pygame.draw.rect(surface, (0,153,105), rect)
         pygame.draw.rect(surface, (0,0,0), rect, 1)        
