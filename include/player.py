@@ -1,3 +1,11 @@
+#------------------------------------------------------------------
+# The "newplayer" class takes care of all the actions done by the
+# players in the game.
+#
+# Local dependecies: cordinates, menu class, holdem_probs/holdem_calc
+#
+# Author: Pablo Loren-Aguilar
+#------------------------------------------------------------------
 import pygame
 import include.menu as menu
 from include.holdem_probs import holdem_calc
@@ -28,284 +36,49 @@ class newplayer():
     
     def call(self,amount):
         self.cash -= amount
-        
-    def preflop(hand,position):
-        if (hand[0][0] == 'A' and hand[1][0] == 'A'):
-            if (position == 'COB'):
-                decision = 'RR'
-            elif (position == 'H'):
-                decision = 'R'
-            elif (position == 'M'):
-                decision = 'R'
-            elif (position == 'E'):
-                decision = 'R'             
-        elif (hand[0][0] == 'A' and hand[1][0] == 'K'):
-            if (position == 'COB'):
-                decision = 'RR'
-            elif (position == 'H'):
-                decision = 'R'
-            elif (position == 'M'):
-                decision = 'R'
-            elif (position == 'E'):
-                decision = 'R'      
-        elif (hand[0][0] == 'A' and hand[1][0] == 'Q'):
-            if (position == 'COB'):
-                decision = 'RR'
-            elif (position == 'H'):
-                decision = 'R'
-            elif (position == 'M'):
-                decision = 'R'
-            elif (position == 'E'):
-                decision = 'R'        
-        elif (hand[0][0] == 'A' and hand[1][0] == 'J'):
-            if (position == 'COB'):
-                decision = 'P'
-            elif (position == 'H'):
-                decision = 'P'
-            elif (position == 'M'):
-                decision = 'P'
-            elif (position == 'E'):
-                decision = 'F'
-        elif (hand[0][0] == 'A' and hand[1][0] == '10'):
-            if (position == 'COB'):
-                decision = 'P'
-            elif (position == 'H'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            elif (position == 'M'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            elif (position == 'E'):
-                decision = 'F'      
-        elif (hand[0][0] == 'A' and (hand[1][0] >= '2' and hand[1][0] <= 9)):
-            if (position == 'COB'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            else:
-                decision = 'F'
-        elif (hand[0][0] == 'K' and hand[1][0] == 'K'):
-            if (position == 'COB'):
-                decision = 'RR'
-            elif (position == 'H'):
-                decision = 'R'
-            elif (position == 'M'):
-                decision = 'R'
-            elif (position == 'E'):
-                decision = 'R'             
-        elif (hand[0][0] == 'K' and hand[1][0] == 'Q'):
-            if (position == 'COB'):
-                decision = 'RR'
-            elif (position == 'H'):
-                decision = 'P'
-            elif (position == 'M'):
-                decision = 'P'
-            elif (position == 'E'):
-                decision = 'F'             
-        elif (hand[0][0] == 'K' and hand[1][0] == 'J'):
-            if (position == 'COB'):
-                decision = 'P'
-            elif (position == 'H'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            elif (position == 'M'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            elif (position == 'E'):              
-                decision = 'F'
-        elif (hand[0][0] == 'K' and (hand[1][0] >= '9' and hand[1][0] <= 10)):
-            if (position == 'COB'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            else:
-                decision = 'F'
-        elif (hand[0][0] == 'Q' and hand[1][0] == 'Q'):
-            if (position == 'COB'):
-                decision = 'RR'
-            elif (position == 'H'):
-                decision = 'R'
-            elif (position == 'M'):
-                decision = 'R'
-            elif (position == 'E'):
-                decision = 'R'
-        elif (hand[0][0] == 'Q' and hand[1][0] == 'J'):
-            if (position == 'COB'):
-                decision = 'P'
-            elif (position == 'H'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            elif (position == 'M'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            elif (position == 'E'):
-                decision = 'F'
-        elif (hand[0][0] == 'Q' and (hand[1][0] >= '9' and hand[1][0] <= 10)):
-            if (position == 'COB'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            else:
-                decision = 'F'
-        elif (hand[0][0] == 'J' and hand[1][0] == 'J'):
-            if (position == 'COB'):
-                decision = 'RR'
-            elif (position == 'H'):
-                decision = 'R'
-            elif (position == 'M'):
-                decision = 'R'
-            elif (position == 'E'):
-                decision = 'P'
-        elif (hand[0][0] == 'J' and hand[1][0] == '10'):
-            if (position == 'COB'):
-                decision = 'RR'
-            elif (position == 'H'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            elif (position == 'M'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            elif (position == 'E'):
-                decision = 'F'
-        elif (hand[0][0] == '10' and hand[1][0] == '10'):
-            if (position == 'COB'):
-                decision = 'RR'
-            elif (position == 'H'):
-                decision = 'R'
-            elif (position == 'M'):
-                decision = 'P'
-            elif (position == 'E'):
-                decision = 'P'                        
-        elif (hand[0][0] == '10' and hand[1][0] == '9'):
-            if (position == 'COB'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            elif (position == 'H'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            elif (position == 'M'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            elif (position == 'E'):              
-                decision = 'F' 
-        elif (hand[0][0] == '9' and hand[1][0] == '9'):
-            if (position == 'COB'):
-                decision = 'P'
-            elif (position == 'H'):
-                decision = 'P'
-            elif (position == 'M'):
-                decision = 'P'
-            elif (position == 'E'):
-                decision = 'F'
-        elif (hand[0][0] == '8' and hand[1][0] == '8'):
-            if (position == 'COB'):
-                decision = 'P'
-            elif (position == 'H'):
-                decision = 'P'
-            elif (position == 'M'):
-                decision = 'P'
-            elif (position == 'E'):
-                decision = 'F'      
-        elif (hand[0][0] == '7' and hand[1][0] == '7'):
-            if (position == 'COB'):
-                decision = 'P'
-            elif (position == 'H'):
-                decision = 'P'
-            elif (position == 'M'):
-                decision = 'P'
-            elif (position == 'E'):
-                decision = 'F'       
-        elif (hand[0][0] == '6' and hand[1][0] == '6'):
-            if (position == 'COB'):
-                decision = 'P'
-            elif (position == 'H'):
-                decision = 'P'
-            else:
-                decision = 'F'
-        elif (hand[0][0] == '5' and hand[1][0] == '5'):
-            if (position == 'COB'):
-                decision = 'P'
-            elif (position == 'H'):
-                decision = 'P'
-            else:
-                decision = 'F'
-        elif (hand[0][0] == '4' and hand[1][0] == '4'):
-            if (position == 'COB'):
-                decision = 'P'
-            elif (position == 'H'):
-                decision = 'P'
-            else:
-                decision = 'F'
-        elif (hand[0][0] == '3' and hand[1][0] == '3'):
-            if (position == 'COB'):
-                decision = 'P'
-            elif (position == 'H'):
-                decision = 'P'
-            else:
-                decision = 'F'
-        elif (hand[0][0] == '2' and hand[1][0] == '2'):
-            if (position == 'COB'):
-                decision = 'P'
-            elif (position == 'H'):
-                decision = 'P'
-            else:
-                decision = 'F'
-        else:
-            if (position == 'COB'):
-                if (hand[0][1] == hand[1][1]):
-                    decision = 'P'
-                else:
-                    decision = 'F'
-            else:
-                decision = 'F'            
-        if (decision != 'RR' and decision != 'R' & decision != 'P' and decision != 'F'):
-              print('Wrong AI decision!')
-               
-        return decision
-              
-    def aibet(self, surface, card, id, hand, commons, pot):
+                    
+    def aibet(self, surface, card, hand, commons, pot, tocall, position, stage):
+        #Load the hole cards
         hand_str = []
         for cards in hand:
             hand_str.append(card.int_to_str(cards))
         hand_str.append('?')
         hand_str.append('?')
-         
-        board_str = None
+        
+        #Load the communal cards
         if (commons != None):
             board_str = []
             for cards in commons:
-                board_str.append(card.int_to_str(cards))      
-        probability = holdem_calc.calculate(board_str, False, 10, None, hand_str, False)          
-        
-        if (probability[0][1] > 0.5):
-            return 15
+                board_str.append(card.int_to_str(cards))
         else:
-            return -1
+            board_str = None
+            
+        #Calculate equity
+        from include.holdem_probs import holdem_calc
+        result = holdem_calc.calculate(board_str, False, 10, None, hand_str,False)
+        
+        #Define pre-flop and post-flop ranges
+        if (stage == 'preflop'):
+            if (position == 'early'):
+                threshold = 0.65
+            elif (position == 'middle'):
+                threshold = 0.58
+            elif (position == 'late'):
+                threshold = 0.5
+          
+            if (result[0][1] > threshold):
+                return 15
+            else:
+                return -1
+        else:
+            EV_Pot = 0.1
+            Eq = result[0][1]
+            if (Eq > EV_Pot):
+                Eq  = min(Eq,0.9)
+                Bet = pot*min(0.3,(Eq-EV_Pot)/(1.-Eq))
+                return max(15,Bet)
+            else:
+                return -1
         
     def bet(self, surface, screen):
         font = pygame.font.SysFont('Tahoma', 30, True, False)
@@ -327,13 +100,28 @@ class newplayer():
             pygame.quit()
         elif (key_name == 'k'):
             amount = 0
+            
+            rect = pygame.Rect(100, 1000, 1075, 500)
+            pygame.draw.rect(surface, (255,255,255), rect)
+            pygame.draw.rect(surface, (255,255,255), rect, 1)
+            
             return amount
         elif (key_name == 'c'):
             amount = 0
+            
+            rect = pygame.Rect(100, 1000, 1075, 500)
+            pygame.draw.rect(surface, (255,255,255), rect)
+            pygame.draw.rect(surface, (255,255,255), rect, 1)
+            
             return amount
         elif (key_name == 'f'):
             screen.player_folds(surface,0)
-            amount = 0
+            amount = -1
+            
+            rect = pygame.Rect(100, 1000, 1075, 500)
+            pygame.draw.rect(surface, (255,255,255), rect)
+            pygame.draw.rect(surface, (255,255,255), rect, 1)
+            
             return amount
         elif (key_name == 'r'):           
             font = pygame.font.SysFont('Tahoma', 30, True, False)
@@ -363,6 +151,10 @@ class newplayer():
                     pygame.display.update()
                     
             rect = pygame.Rect(bet_x, bet_y, 600, 50)
+            pygame.draw.rect(surface, (255,255,255), rect)
+            pygame.draw.rect(surface, (255,255,255), rect, 1)
+            
+            rect = pygame.Rect(100, 1000, 1075, 500)
             pygame.draw.rect(surface, (255,255,255), rect)
             pygame.draw.rect(surface, (255,255,255), rect, 1)
             
